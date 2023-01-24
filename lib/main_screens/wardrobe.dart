@@ -1,12 +1,12 @@
 
 import 'package:avatar/catalogs.dart';
 import 'package:avatar/class.dart';
-import 'package:avatar/home.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'dresstile.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Wardrobe extends StatefulWidget {
@@ -24,9 +24,9 @@ class _Wardrobe extends State<Wardrobe> {
         .collection("user_v2")
         .get()
         .then((snapshot) => snapshot.docs.forEach((element) {
-              print(element.reference);
-              DressIDs.add(element.reference.id);
-            }));
+      print(element.reference);
+      DressIDs.add(element.reference.id);
+    }));
   }
 
 
@@ -104,12 +104,12 @@ class _Wardrobe extends State<Wardrobe> {
             future: getDress(),
             builder: (context, snapshot) {
               return ListView.builder(
-                itemCount: DressIDs.length,
+                  itemCount: DressIDs.length,
                   itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(DressIDs[index]),
-                );
-              });
+                    return ListTile(
+                      title: Text(DressIDs[index]),
+                    );
+                  });
             },
           )),
 

@@ -1,12 +1,12 @@
 import 'package:avatar/catalogs.dart';
-import 'package:avatar/class.dart';
-import 'package:avatar/fav.dart';
-import 'package:avatar/home.dart';
-import 'package:avatar/profile.dart';
-import 'package:avatar/wardrobe.dart';
+import 'package:avatar/main_screens/home.dart';
+import 'package:avatar/main_screens/profile.dart';
+import 'package:avatar/main_screens/wardrob2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+
+import 'main_screens/fav.dart';
 
 class Constains extends StatefulWidget {
   const Constains({Key? key}) : super(key: key);
@@ -21,7 +21,7 @@ class _Constains extends State<Constains> {
   final pages = [
     const Home(),
     const Fav(),
-    const ProductCard(),
+    Wardrobe2(),
     const profile(),
   ];
 
@@ -57,7 +57,6 @@ class _Constains extends State<Constains> {
             GButton(
               icon: CupertinoIcons.cube_box,
               text: "Wardrobe",
-
             ),
             GButton(
               icon: CupertinoIcons.profile_circled,

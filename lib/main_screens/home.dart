@@ -128,26 +128,26 @@ class _Home extends State<Home> {
                                       builder: (context) {
                                         return SizedBox(
                                           height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
+                                              .size
+                                              .height /
                                               2,
                                           child: Consumer<DressModel>(
                                             builder: (context, value, child) {
                                               return Column(
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                                 children: [
                                                   Padding(
                                                     padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 24.0,
-                                                            vertical: 20),
+                                                    EdgeInsets.symmetric(
+                                                        horizontal: 24.0,
+                                                        vertical: 20),
                                                     child: Text(
                                                       "My Dresses",
                                                       style: GoogleFonts.alata(
                                                         fontSize: 20,
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight.bold,
                                                       ),
                                                     ),
                                                   ),
@@ -156,61 +156,61 @@ class _Home extends State<Home> {
                                                   Expanded(
                                                     child: Padding(
                                                       padding:
-                                                          const EdgeInsets.all(
-                                                              12.0),
+                                                      const EdgeInsets.all(
+                                                          12.0),
                                                       child: ListView.builder(
                                                         itemCount: value
                                                             .cartItems.length,
                                                         padding:
-                                                            EdgeInsets.all(12),
+                                                        EdgeInsets.all(12),
                                                         itemBuilder:
                                                             (context, index) {
                                                           return Padding(
                                                             padding:
-                                                                const EdgeInsets
-                                                                    .all(12.0),
+                                                            const EdgeInsets
+                                                                .all(12.0),
                                                             child: Container(
                                                               decoration: BoxDecoration(
                                                                   color: Colors
                                                                       .pink
                                                                       .shade50,
                                                                   borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              8)),
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                      8)),
                                                               child: ListTile(
                                                                 leading:
-                                                                    Image.asset(
+                                                                Image.asset(
                                                                   value.cartItems[
-                                                                      index][2],
+                                                                  index][2],
                                                                   height: 36,
                                                                 ),
                                                                 title: Text(
                                                                   value.cartItems[
-                                                                      index][0],
+                                                                  index][0],
                                                                   style: const TextStyle(
                                                                       fontSize:
-                                                                          18),
+                                                                      18),
                                                                 ),
                                                                 subtitle: Text(
                                                                   value.cartItems[
-                                                                      index][1],
+                                                                  index][1],
                                                                   style: const TextStyle(
                                                                       fontSize:
-                                                                          12),
+                                                                      12),
                                                                 ),
                                                                 trailing:
-                                                                    IconButton(
+                                                                IconButton(
                                                                   icon: const Icon(
                                                                       Icons
                                                                           .cancel),
                                                                   onPressed: () => Provider.of<
-                                                                              DressModel>(
-                                                                          context,
-                                                                          listen:
-                                                                              false)
+                                                                      DressModel>(
+                                                                      context,
+                                                                      listen:
+                                                                      false)
                                                                       .removeItemFromCart(
-                                                                          index),
+                                                                      index),
                                                                 ),
                                                               ),
                                                             ),
@@ -228,9 +228,9 @@ class _Home extends State<Home> {
                                 },
                                 child: Container(
                                   width:
-                                      MediaQuery.of(context).size.width / 2.3,
+                                  MediaQuery.of(context).size.width / 2.3,
                                   height:
-                                      MediaQuery.of(context).size.height / 4.5,
+                                  MediaQuery.of(context).size.height / 4.5,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
                                       border: Border.all(
@@ -239,7 +239,7 @@ class _Home extends State<Home> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(30.0),
                                     child:
-                                        Image.asset("lib/clothes-hanger.png"),
+                                    Image.asset("lib/clothes-hanger.png"),
                                   ),
                                 ),
                               ),
@@ -249,7 +249,7 @@ class _Home extends State<Home> {
                               Container(
                                 width: MediaQuery.of(context).size.width / 2.3,
                                 height:
-                                    MediaQuery.of(context).size.height / 4.5,
+                                MediaQuery.of(context).size.height / 4.5,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     border: Border.all(
@@ -262,7 +262,7 @@ class _Home extends State<Home> {
                               Container(
                                 width: MediaQuery.of(context).size.width / 2.3,
                                 height:
-                                    MediaQuery.of(context).size.height / 4.5,
+                                MediaQuery.of(context).size.height / 4.5,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     border: Border.all(
@@ -275,7 +275,7 @@ class _Home extends State<Home> {
                               Container(
                                 width: MediaQuery.of(context).size.width / 2.3,
                                 height:
-                                    MediaQuery.of(context).size.height / 4.5,
+                                MediaQuery.of(context).size.height / 4.5,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     border: Border.all(
