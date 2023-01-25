@@ -2,7 +2,65 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// imports start for Firebase
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+// imports end for firebase
+
 class Wardrobe2 extends StatefulWidget {
+  
+  
+  // Code Start For Firebase Integration
+  
+//   void main() async {
+// WidgetsFlutterBinding.ensureInitialized();
+// await Firebase.initializeApp();
+// runApp(MyApp());
+// }
+
+// class MyApp extends StatelessWidget {
+// @override
+// Widget build(BuildContext context) {
+// 	return MaterialApp(
+// 	title: 'Firebase',
+// 	home: AddData(),
+// 	);
+// }
+// }
+
+// class AddData extends StatelessWidget {
+// @override
+// Widget build(BuildContext context) {
+// 	return Scaffold(
+// 	appBar: AppBar(
+// 		backgroundColor: Colors.green,
+// 		title: Text("geeksforgeeks"),
+// 	),
+// 	body: StreamBuilder(
+// 		stream: FirebaseFirestore.instance.collection('user_v2').doc(user.uid)snapshots(),
+// 		builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+// 		if (!snapshot.hasData) {
+// 			return Center(
+// 			child: CircularProgressIndicator(),
+// 			);
+// 		}
+
+// 		return ListView(
+// 			children: snapshot.data.docs.map((document) {
+// 			return Container(
+// 				child: Center(child: Text(document['text'])),
+// 			);
+// 			}).toList(),
+// 		);
+// 		},
+// 	),
+// 	);
+// }
+// }
+  
+  // Code End For Firebase Integration
+  
+  
   const Wardrobe2({super.key});
 
   @override
@@ -16,6 +74,7 @@ class _Wardrobe2State extends State<Wardrobe2> {
     "Watch Shirts",
     "Watch Top",
   ];
+
   int current = 0;
 
   double changePositionedOfLine() {
