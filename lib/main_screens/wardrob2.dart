@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,6 +11,21 @@ class Wardrobe2 extends StatefulWidget {
 }
 
 class _Wardrobe2State extends State<Wardrobe2> {
+
+  List<String> DressIDs = [];
+
+
+  Future getDress() async {
+    await FirebaseFirestore.instance
+        .collection("Categories")
+        .get()
+        .then((snapshot) => snapshot.docs.forEach((element) {
+              print(element.data());
+              var a = element.data();
+              DressIDs.add(a["CatLevel1"]);
+            }));
+  }
+
   List<String> tabs = [
     "Watch Top",
     "Watch Shirts",
@@ -77,107 +93,41 @@ class _Wardrobe2State extends State<Wardrobe2> {
             ),
           ),
           Container(
-            width: MediaQuery.of(context).size.width / 1.05,
             height: MediaQuery.of(context).size.height / 7,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width / 4,
-                        height: MediaQuery.of(context).size.height / 10,
-                        decoration: BoxDecoration(
-                            color: Colors.pink.shade50, shape: BoxShape.circle),
-                      ),
-
-                      Text(
-                        "Dress",
-                        style: GoogleFonts.alata(
-                            fontSize: 20, fontWeight: FontWeight.w500),
-                      ),
-
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width / 4,
-                        height: MediaQuery.of(context).size.height / 10,
-                        decoration: BoxDecoration(
-                            color: Colors.pink.shade50, shape: BoxShape.circle),
-                      ),
-
-                      Text(
-                        "Dress",
-                        style: GoogleFonts.alata(
-                            fontSize: 20, fontWeight: FontWeight.w500),
-                      ),
-
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width / 4,
-                        height: MediaQuery.of(context).size.height / 10,
-                        decoration: BoxDecoration(
-                            color: Colors.pink.shade50, shape: BoxShape.circle),
-                      ),
-
-                      Text(
-                        "Shoes",
-                        style: GoogleFonts.alata(
-                            fontSize: 20, fontWeight: FontWeight.w500),
-                      ),
-
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width / 4,
-                        height: MediaQuery.of(context).size.height / 10,
-                        decoration: BoxDecoration(
-                            color: Colors.pink.shade50, shape: BoxShape.circle),
-                      ),
-
-                      Text(
-                        "Bag",
-                        style: GoogleFonts.alata(
-                            fontSize: 20, fontWeight: FontWeight.w500),
-                      ),
-
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width / 4,
-                        height: MediaQuery.of(context).size.height / 10,
-                        decoration: BoxDecoration(
-                            color: Colors.pink.shade50, shape: BoxShape.circle),
-                      ),
-
-                      Text(
-                        "Accessories",
-                        style: GoogleFonts.alata(
-                            fontSize: 20, fontWeight: FontWeight.w500),
-                      ),
-
-                    ],
-                  ),
-                ],
-              ),
-            ),
+            child: Expanded(
+                child: FutureBuilder(
+              future: getDress(),
+              builder: (context, snapshot) {
+                return ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: DressIDs.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width / 4,
+                            height: MediaQuery.of(context).size.height / 10,
+                            decoration: BoxDecoration(
+                                color: Colors.pink.shade50,
+                                shape: BoxShape.circle),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width / 4,
+                            child: Center(
+                              child: Text(
+                                DressIDs[index],
+                                style: GoogleFonts.alata(
+                                    fontSize: 15, fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    });
+              },
+            )),
           ),
-          SizedBox(height: MediaQuery.of(context).size.height / 40,),
           SizedBox(
             width: size.width,
             height: size.height / 2,
