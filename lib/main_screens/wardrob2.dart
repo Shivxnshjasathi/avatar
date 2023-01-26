@@ -11,19 +11,25 @@ class Wardrobe2 extends StatefulWidget {
 }
 
 class _Wardrobe2State extends State<Wardrobe2> {
+  List MyArray = [];
 
-  List<String> DressIDs = [];
-
+  int _selectedCategoryIndex = -1;
 
   Future getDress() async {
     await FirebaseFirestore.instance
-        .collection("Categories")
+        .collection("test_category")
         .get()
-        .then((snapshot) => snapshot.docs.forEach((element) {
-              print(element.data());
-              var a = element.data();
-              DressIDs.add(a["CatLevel1"]);
-            }));
+        .then((snapshot) => {
+              snapshot.docs.forEach((element) {
+                print(element.data());
+                var a = element.data();
+
+                //DressIDs.add(a["CatLevel1"]);
+                MyArray.add(a);
+                print(MyArray);
+              }),
+
+            });
   }
 
   List<String> tabs = [
@@ -100,29 +106,37 @@ class _Wardrobe2State extends State<Wardrobe2> {
               builder: (context, snapshot) {
                 return ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: DressIDs.length,
+                    itemCount: MyArray.length,
                     itemBuilder: (context, index) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width / 4,
-                            height: MediaQuery.of(context).size.height / 10,
-                            decoration: BoxDecoration(
-                                color: Colors.pink.shade50,
-                                shape: BoxShape.circle),
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width / 4,
-                            child: Center(
-                              child: Text(
-                                DressIDs[index],
-                                style: GoogleFonts.alata(
-                                    fontSize: 15, fontWeight: FontWeight.w500),
+                      return InkWell(
+                        onTap: () {
+                          setState(() {
+                            _selectedCategoryIndex = index;
+                          });
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width / 4,
+                              height: MediaQuery.of(context).size.height / 10,
+                              decoration: BoxDecoration(
+                                  color: Colors.pink.shade50,
+                                  shape: BoxShape.circle),
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width / 4,
+                              child: Center(
+                                child: Text(
+                                  MyArray[index]['title'],
+                                  style: GoogleFonts.alata(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       );
                     });
               },
@@ -149,7 +163,11 @@ class _Wardrobe2State extends State<Wardrobe2> {
                           child: ListView.builder(
                               physics: const BouncingScrollPhysics(),
                               scrollDirection: Axis.horizontal,
-                              itemCount: tabs.length,
+                              itemCount: _selectedCategoryIndex > -1
+                                  ? MyArray[_selectedCategoryIndex]
+                                          ['sub_category']
+                                      .length
+                                  : 0,
                               itemBuilder: (context, index) {
                                 return Padding(
                                   padding: EdgeInsets.only(
@@ -161,7 +179,8 @@ class _Wardrobe2State extends State<Wardrobe2> {
                                       });
                                     },
                                     child: Text(
-                                      tabs[index],
+                                      MyArray[_selectedCategoryIndex]
+                                          ['sub_category'][index],
                                       style: GoogleFonts.alata(
                                         fontSize: current == index ? 16 : 14,
                                         fontWeight: current == index
