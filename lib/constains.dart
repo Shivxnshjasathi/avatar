@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 import 'main_screens/fav.dart';
+import 'main_screens/trail.dart';
 
 class Constains extends StatefulWidget {
   const Constains({Key? key}) : super(key: key);
@@ -21,7 +22,7 @@ class _Constains extends State<Constains> {
   final pages = [
     const Home(),
     const Fav(),
-    Wardrobe2(),
+    trail(),
     const profile(),
   ];
 
