@@ -19,6 +19,21 @@ class _Wardrobe2State extends State<Wardrobe2> {
   int current = 0;
   String selected_category = "";
 
+  double changePositionedOfLine() {
+    switch (current) {
+      case 0:
+        return 5;
+      case 1:
+        return 85;
+      case 2:
+        return 178;
+      case 3:
+        return 273;
+      default:
+        return 0;
+    }
+  }
+
   double changeContainerWidth() {
     switch (current) {
       case 0:
@@ -39,7 +54,7 @@ class _Wardrobe2State extends State<Wardrobe2> {
     tempArray = [];
     await FirebaseFirestore.instance
         .collection("user_v2")
-        .doc("0000000000")
+        .doc("000000123")
         .collection("products")
         .get()
         .then((snapshot) => {
@@ -57,6 +72,20 @@ class _Wardrobe2State extends State<Wardrobe2> {
               }),
               print(Maindata),
             });
+  }
+
+  bool _isLongPressed = false;
+
+  void _onLongPress() {
+    setState(() {
+      _isLongPressed = true;
+    });
+  }
+
+  void _onLongPressEnd() {
+    setState(() {
+      _isLongPressed = false;
+    });
   }
 
   @override
@@ -146,7 +175,7 @@ class _Wardrobe2State extends State<Wardrobe2> {
                               right: 0,
                               child: SizedBox(
                                 width: size.width,
-                                height: size.height * 0.04,
+                                height: size.height / 10,
                                 child: ListView.builder(
                                     physics: const BouncingScrollPhysics(),
                                     scrollDirection: Axis.horizontal,
@@ -170,18 +199,38 @@ class _Wardrobe2State extends State<Wardrobe2> {
                                                 .Myarray[0][selected_category]
                                                 .keys
                                                 .toList()[index]);
+                                            setState(() {
+                                              current = index;
+                                            });
                                           },
-                                          child: Text(
-                                            widget.Myarray[0][selected_category]
-                                                .keys
-                                                .toList()[index],
-                                            style: GoogleFonts.alata(
-                                              fontSize:
-                                                  current == index ? 16 : 14,
-                                              fontWeight: current == index
-                                                  ? FontWeight.w400
-                                                  : FontWeight.w300,
-                                            ),
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                widget
+                                                    .Myarray[0]
+                                                        [selected_category]
+                                                    .keys
+                                                    .toList()[index],
+                                                style: GoogleFonts.alata(
+                                                  fontSize: current == index
+                                                      ? 16
+                                                      : 16,
+                                                  fontWeight: current == index
+                                                      ? FontWeight.w400
+                                                      : FontWeight.w300,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              Icon(
+                                                Icons.circle,
+                                                size: 10,
+                                                color: current == index
+                                                    ? Colors.pink.shade50
+                                                    : Colors.transparent,
+                                              )
+                                            ],
                                           ),
                                         ),
                                       );
@@ -200,96 +249,131 @@ class _Wardrobe2State extends State<Wardrobe2> {
                                   Maindata.length > 0 ? Maindata.length : 0,
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      childAspectRatio: 0.5,
-                                      crossAxisSpacing: 0.0,
+                                      crossAxisCount: 3,
+                                      childAspectRatio: 0.62,
+                                      crossAxisSpacing: 0.06,
                                       mainAxisSpacing: 12.0),
                               itemBuilder: (BuildContext context, int index) {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: Container(
-                                    width:
-                                        MediaQuery.of(context).size.width / 4,
-                                    height:
-                                        MediaQuery.of(context).size.height / 2,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      border: Border.all(
-                                          color: Colors.black12, width: 1.5),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8.0),
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            child: Image.network(
-                                                Maindata[index]["img_url"][0],
-                                                scale: 1),
-                                          ),
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 10.0),
-                                            child: Text(
-                                              Maindata[index]["brand"],
-                                              style: GoogleFonts.alata(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold),
+                                return GestureDetector(
+                                  onLongPress: _onLongPress,
+                                  onLongPressEnd: (_) => _onLongPressEnd(),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    child: Container(
+                                      width:
+                                          MediaQuery.of(context).size.width / 4,
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              3,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                            color: Colors.black12, width: 1.5),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 10.0,
+                                                      vertical: 5),
+                                              child: Container(
+                                                child: _isLongPressed
+                                                    ? Container(
+                                                        height: 10,
+                                                        width: 10,
+                                                        color: Color.fromRGBO(
+                                                            Maindata[index]
+                                                                    ["color"]
+                                                                .toList()[0]
+                                                                .toInt(),
+                                                            Maindata[index]
+                                                                    ["color"]
+                                                                .toList()[1]
+                                                                .toInt(),
+                                                            Maindata[index]
+                                                                    ["color"]
+                                                                .toList()[2]
+                                                                .toInt(),
+                                                            1),
+                                                        //  child: Text(
+                                                        //    'Size : ' +
+                                                        //      Maindata[index]
+                                                        //      ["color"]
+                                                        //         .toList()
+                                                        //         .join(","),
+                                                        // style:
+                                                        // GoogleFonts.alata(
+                                                        //     fontSize: 10,
+                                                        //     fontWeight:
+                                                        //     FontWeight
+                                                        //         .w300),
+                                                        //  ),
+                                                      )
+                                                    : Image.network(
+                                                        Maindata[index]
+                                                            ["img_url"][0],
+                                                        scale: 1.4),
+                                              ),
                                             ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 10.0, horizontal: 10),
-                                            child: Text(
-                                              Maindata[index]["ordered_item"],
-                                              style: GoogleFonts.alata(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w300),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 5.0,
+                                                      horizontal: 10),
+                                              child: _isLongPressed
+                                                  ? Text(
+                                                      'Price : ' +
+                                                          Maindata[index]
+                                                              ["price"],
+                                                      style: GoogleFonts.alata(
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                              FontWeight.w300),
+                                                    )
+                                                  : Text(
+                                                      Maindata[index]["brand"],
+                                                      style: GoogleFonts.alata(
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
                                             ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 10.0, horizontal: 4),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 2.0),
-                                                  child: Text(
-                                                    'Size : ' +
-                                                        Maindata[index]["size"],
-                                                    style: GoogleFonts.alata(
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 2.0),
-                                                  child: Text(
-                                                    'Date : ' +
-                                                        Maindata[index]["date"],
-                                                    style: GoogleFonts.alata(
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                ),
-                                              ],
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 5.0,
+                                                      horizontal: 10),
+                                              child: _isLongPressed
+                                                  ? Text(
+                                                      'Item : ' +
+                                                          Maindata[index]
+                                                              ["ordered_item"],
+                                                      style: GoogleFonts.alata(
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                              FontWeight.w300),
+                                                    )
+                                                  : Text(
+                                                      'vendors : ' +
+                                                          Maindata[index]
+                                                              ["vendors"],
+                                                      style: GoogleFonts.alata(
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                              FontWeight.w300),
+                                                    ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -304,5 +388,85 @@ class _Wardrobe2State extends State<Wardrobe2> {
                 ),
               ])),
         ));
+  }
+
+  Offset _tapPosition = Offset.zero;
+  void _getTapPosition(TapDownDetails details) {
+    final RenderBox referenceBox = context.findRenderObject() as RenderBox;
+    setState(() {
+      _tapPosition = referenceBox.globalToLocal(details.globalPosition);
+    });
+  }
+
+  void _showContextMenu(int index) async {
+    final RenderObject? overlay =
+        Overlay.of(context)?.context.findRenderObject();
+
+    ShapeBorder:
+    BorderRadius.circular(20);
+
+    final result = await showMenu(
+        context: context,
+
+        // Show the context menu at the tap location
+        position: RelativeRect.fromRect(
+            Rect.fromLTWH(_tapPosition.dx, _tapPosition.dy, 30, 30),
+            Rect.fromLTWH(0, 0, overlay!.paintBounds.size.width,
+                overlay.paintBounds.size.height)),
+
+        // set a list of choices for the context menu
+        items: [
+          PopupMenuItem(
+            value: 'comment',
+            child: Container(
+              child: Image.network(Maindata[index]["img_url"][0], scale: 1),
+            ),
+          ),
+          PopupMenuItem(
+            value: 'favorites',
+            child: Text(
+              'Brand : ' + Maindata[index]["brand"],
+              style:
+                  GoogleFonts.alata(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
+          ),
+          PopupMenuItem(
+            value: 'favorites',
+            child: Text(
+              'Item : ' + Maindata[index]["ordered_item"],
+              style:
+                  GoogleFonts.alata(fontSize: 12, fontWeight: FontWeight.w100),
+            ),
+          ),
+          PopupMenuItem(
+            value: 'favorites',
+            child: Text(
+              'Size : ' + Maindata[index]["size"],
+              style:
+                  GoogleFonts.alata(fontSize: 12, fontWeight: FontWeight.w100),
+            ),
+          ),
+          PopupMenuItem(
+            value: 'favorites',
+            child: Text(
+              'Vendors : ' + Maindata[index]["vendors"],
+              style:
+                  GoogleFonts.alata(fontSize: 12, fontWeight: FontWeight.w100),
+            ),
+          ),
+        ]);
+
+    // Implement the logic for each choice here
+    switch (result) {
+      case 'favorites':
+        debugPrint('Add To Favorites');
+        break;
+      case 'comment':
+        debugPrint('Write Comment');
+        break;
+      case 'hide':
+        debugPrint('Hide');
+        break;
+    }
   }
 }

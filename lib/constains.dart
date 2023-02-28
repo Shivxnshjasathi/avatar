@@ -30,7 +30,10 @@ class _Constains extends State<Constains> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: pages[pageIndex],
+      body: IndexedStack(
+        index: pageIndex,
+        children: pages,
+      ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
         child: GNav(
