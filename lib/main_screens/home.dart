@@ -24,7 +24,7 @@ class _Home extends State<Home> {
                 height: MediaQuery.of(context).size.height / 30,
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height / 40,
+                height: 40,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Row(

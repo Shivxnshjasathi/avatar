@@ -35,9 +35,9 @@ class _Constains extends State<Constains> {
         children: pages,
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 15),
         child: GNav(
-          gap: 5,
+          gap: 2,
           haptic: true,
           backgroundColor: Colors.white,
           activeColor: Colors.black,
@@ -56,11 +56,11 @@ class _Constains extends State<Constains> {
             ),
             GButton(
               icon: Icons.favorite,
-              text: "Favorite",
+              text: "Fav",
             ),
             GButton(
               icon: CupertinoIcons.cube_box,
-              text: "Wardrobe",
+              text: "Ward",
             ),
             GButton(
               icon: CupertinoIcons.profile_circled,

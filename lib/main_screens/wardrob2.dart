@@ -54,7 +54,7 @@ class _Wardrobe2State extends State<Wardrobe2> {
     tempArray = [];
     await FirebaseFirestore.instance
         .collection("user_v2")
-        .doc("000000123")
+        .doc("000000124")
         .collection("products")
         .get()
         .then((snapshot) => {
@@ -62,10 +62,24 @@ class _Wardrobe2State extends State<Wardrobe2> {
                 //print(element.id);
 
                 var a = element.data();
-                if (a["cats"].contains(selected_cat.toLowerCase())) {
-                  //Maindata.add(a);
-                  tempArray.add(a);
-                }
+                print(a["cats"]);
+                print(selected_cat);
+                a["cats"].forEach((itemcat) {
+                  if (selected_cat
+                              .toLowerCase()
+                              .substring(0, selected_cat.length - 1) ==
+                          itemcat.toLowerCase() ||
+                      selected_cat.toLowerCase() == itemcat.toLowerCase()) {
+                    //Maindata.add(a);
+
+                    tempArray.add(a);
+                  }
+                });
+
+                //if (a["cats"].contains(selected_cat.toLowerCase())) {
+
+                // tempArray.add(a);
+                //}
               }),
               setState(() {
                 Maindata = tempArray;
@@ -100,7 +114,7 @@ class _Wardrobe2State extends State<Wardrobe2> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Container(
-                    height: MediaQuery.of(context).size.height / 6,
+                    height: 150,
                     child: Expanded(child: FutureBuilder(
                       builder: (context, snapshot) {
                         return ListView.builder(
@@ -166,7 +180,7 @@ class _Wardrobe2State extends State<Wardrobe2> {
                       Container(
                         margin: const EdgeInsets.only(top: 15),
                         width: size.width,
-                        height: size.height * 0.05,
+                        height: 50,
                         child: Stack(
                           children: [
                             Positioned(
@@ -242,6 +256,7 @@ class _Wardrobe2State extends State<Wardrobe2> {
                       ),
                       Container(
                         height: MediaQuery.of(context).size.height / 1.5,
+                        width: MediaQuery.of(context).size.width / 1.05,
                         child: Expanded(child: FutureBuilder(
                           builder: (context, snapshot) {
                             return GridView.builder(
@@ -250,132 +265,229 @@ class _Wardrobe2State extends State<Wardrobe2> {
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 3,
-                                      childAspectRatio: 0.62,
-                                      crossAxisSpacing: 0.06,
-                                      mainAxisSpacing: 12.0),
+                                      childAspectRatio: 0.5,
+                                      crossAxisSpacing: 1,
+                                      mainAxisSpacing: 2.0),
                               itemBuilder: (BuildContext context, int index) {
                                 return GestureDetector(
-                                  onLongPress: _onLongPress,
-                                  onLongPressEnd: (_) => _onLongPressEnd(),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0),
-                                    child: Container(
-                                      width:
-                                          MediaQuery.of(context).size.width / 4,
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              3,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(
-                                            color: Colors.black12, width: 1.5),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 8.0),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 10.0,
-                                                      vertical: 5),
-                                              child: Container(
-                                                child: _isLongPressed
-                                                    ? Container(
-                                                        height: 10,
-                                                        width: 10,
-                                                        color: Color.fromRGBO(
-                                                            Maindata[index]
-                                                                    ["color"]
-                                                                .toList()[0]
-                                                                .toInt(),
-                                                            Maindata[index]
-                                                                    ["color"]
-                                                                .toList()[1]
-                                                                .toInt(),
-                                                            Maindata[index]
-                                                                    ["color"]
-                                                                .toList()[2]
-                                                                .toInt(),
-                                                            1),
-                                                        //  child: Text(
-                                                        //    'Size : ' +
-                                                        //      Maindata[index]
-                                                        //      ["color"]
-                                                        //         .toList()
-                                                        //         .join(","),
-                                                        // style:
-                                                        // GoogleFonts.alata(
-                                                        //     fontSize: 10,
-                                                        //     fontWeight:
-                                                        //     FontWeight
-                                                        //         .w300),
-                                                        //  ),
-                                                      )
-                                                    : Image.network(
-                                                        Maindata[index]
-                                                            ["img_url"][0],
-                                                        scale: 1.4),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 5.0,
-                                                      horizontal: 10),
-                                              child: _isLongPressed
-                                                  ? Text(
-                                                      'Price : ' +
-                                                          Maindata[index]
-                                                              ["price"],
-                                                      style: GoogleFonts.alata(
-                                                          fontSize: 10,
-                                                          fontWeight:
-                                                              FontWeight.w300),
-                                                    )
-                                                  : Text(
-                                                      Maindata[index]["brand"],
-                                                      style: GoogleFonts.alata(
-                                                          fontSize: 10,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 5.0,
-                                                      horizontal: 10),
-                                              child: _isLongPressed
-                                                  ? Text(
-                                                      'Item : ' +
+                                  onLongPress: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(30),
+                                          ),
+                                          title: Text(
+                                            Maindata[index]["brand"],
+                                            style: GoogleFonts.alata(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          content: Container(
+                                            height: 350,
+                                            child: Center(
+                                              child: Column(
+                                                children: [
+                                                  Image.network(
+                                                      Maindata[index]["img_url"]
+                                                          [0],
+                                                      scale: 0.8),
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        vertical: 10.0),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
                                                           Maindata[index]
                                                               ["ordered_item"],
-                                                      style: GoogleFonts.alata(
-                                                          fontSize: 10,
-                                                          fontWeight:
-                                                              FontWeight.w300),
-                                                    )
-                                                  : Text(
-                                                      'vendors : ' +
+                                                          style:
+                                                              GoogleFonts.alata(
+                                                                  fontSize: 15,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w300),
+                                                        ),
+                                                        Text(
                                                           Maindata[index]
-                                                              ["vendors"],
-                                                      style: GoogleFonts.alata(
-                                                          fontSize: 10,
-                                                          fontWeight:
-                                                              FontWeight.w300),
+                                                              ["price"],
+                                                          style:
+                                                              GoogleFonts.alata(
+                                                                  fontSize: 15,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w300),
+                                                        ),
+                                                        Text(
+                                                          Maindata[index]
+                                                              ["size"],
+                                                          style:
+                                                              GoogleFonts.alata(
+                                                                  fontSize: 15,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w300),
+                                                        ),
+                                                      ],
                                                     ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: Stack(children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          border: Border.all(
+                                              color: Colors.black12,
+                                              width: 1.5),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 8.0),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 10.0,
+                                                        vertical: 5),
+                                                child: Container(
+                                                  child: _isLongPressed
+                                                      ? Container(
+                                                          height: 20,
+                                                          width: 20,
+                                                          color: Color.fromRGBO(
+                                                              Maindata[index]
+                                                                      ["color"]
+                                                                  .toList()[0]
+                                                                  .toInt(),
+                                                              Maindata[index]
+                                                                      ["color"]
+                                                                  .toList()[1]
+                                                                  .toInt(),
+                                                              Maindata[index]
+                                                                      ["color"]
+                                                                  .toList()[2]
+                                                                  .toInt(),
+                                                              1),
+                                                          //  ),
+                                                        )
+                                                      : Image.network(
+                                                          Maindata[index]
+                                                              ["img_url"][0],
+                                                          scale: 1),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 5.0,
+                                                        horizontal: 10),
+                                                child: _isLongPressed
+                                                    ? Text(
+                                                        'Price : ' +
+                                                            Maindata[index]
+                                                                ["price"],
+                                                        style:
+                                                            GoogleFonts.alata(
+                                                                fontSize: 10,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w300),
+                                                      )
+                                                    : Text(
+                                                        Maindata[index]
+                                                            ["brand"],
+                                                        style:
+                                                            GoogleFonts.alata(
+                                                                fontSize: 10,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                      ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 5.0,
+                                                        horizontal: 10),
+                                                child: _isLongPressed
+                                                    ? Text(
+                                                        'Item : ' +
+                                                            Maindata[index][
+                                                                "ordered_item"],
+                                                        style:
+                                                            GoogleFonts.alata(
+                                                                fontSize: 10,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w300),
+                                                      )
+                                                    : Text(
+                                                        'vendors : ' +
+                                                            Maindata[index]
+                                                                ["vendors"],
+                                                        style:
+                                                            GoogleFonts.alata(
+                                                                fontSize: 10,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w300),
+                                                      ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0, vertical: 5),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            SizedBox(),
+                                            Container(
+                                              height: 10,
+                                              width: 10,
+                                              decoration: BoxDecoration(
+                                                  color: Color.fromRGBO(
+                                                      Maindata[index]["color"]
+                                                          .toList()[0]
+                                                          .toInt(),
+                                                      Maindata[index]["color"]
+                                                          .toList()[1]
+                                                          .toInt(),
+                                                      Maindata[index]["color"]
+                                                          .toList()[2]
+                                                          .toInt(),
+                                                      1),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20)),
                                             ),
                                           ],
                                         ),
                                       ),
-                                    ),
+                                    ]),
                                   ),
                                 );
                               },
@@ -388,85 +500,5 @@ class _Wardrobe2State extends State<Wardrobe2> {
                 ),
               ])),
         ));
-  }
-
-  Offset _tapPosition = Offset.zero;
-  void _getTapPosition(TapDownDetails details) {
-    final RenderBox referenceBox = context.findRenderObject() as RenderBox;
-    setState(() {
-      _tapPosition = referenceBox.globalToLocal(details.globalPosition);
-    });
-  }
-
-  void _showContextMenu(int index) async {
-    final RenderObject? overlay =
-        Overlay.of(context)?.context.findRenderObject();
-
-    ShapeBorder:
-    BorderRadius.circular(20);
-
-    final result = await showMenu(
-        context: context,
-
-        // Show the context menu at the tap location
-        position: RelativeRect.fromRect(
-            Rect.fromLTWH(_tapPosition.dx, _tapPosition.dy, 30, 30),
-            Rect.fromLTWH(0, 0, overlay!.paintBounds.size.width,
-                overlay.paintBounds.size.height)),
-
-        // set a list of choices for the context menu
-        items: [
-          PopupMenuItem(
-            value: 'comment',
-            child: Container(
-              child: Image.network(Maindata[index]["img_url"][0], scale: 1),
-            ),
-          ),
-          PopupMenuItem(
-            value: 'favorites',
-            child: Text(
-              'Brand : ' + Maindata[index]["brand"],
-              style:
-                  GoogleFonts.alata(fontSize: 15, fontWeight: FontWeight.bold),
-            ),
-          ),
-          PopupMenuItem(
-            value: 'favorites',
-            child: Text(
-              'Item : ' + Maindata[index]["ordered_item"],
-              style:
-                  GoogleFonts.alata(fontSize: 12, fontWeight: FontWeight.w100),
-            ),
-          ),
-          PopupMenuItem(
-            value: 'favorites',
-            child: Text(
-              'Size : ' + Maindata[index]["size"],
-              style:
-                  GoogleFonts.alata(fontSize: 12, fontWeight: FontWeight.w100),
-            ),
-          ),
-          PopupMenuItem(
-            value: 'favorites',
-            child: Text(
-              'Vendors : ' + Maindata[index]["vendors"],
-              style:
-                  GoogleFonts.alata(fontSize: 12, fontWeight: FontWeight.w100),
-            ),
-          ),
-        ]);
-
-    // Implement the logic for each choice here
-    switch (result) {
-      case 'favorites':
-        debugPrint('Add To Favorites');
-        break;
-      case 'comment':
-        debugPrint('Write Comment');
-        break;
-      case 'hide':
-        debugPrint('Hide');
-        break;
-    }
   }
 }
