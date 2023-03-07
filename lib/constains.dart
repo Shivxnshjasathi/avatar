@@ -4,6 +4,7 @@ import 'package:avatar/main_screens/profile.dart';
 import 'package:avatar/main_screens/wardrob2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 import 'main_screens/fav.dart';
@@ -35,9 +36,9 @@ class _Constains extends State<Constains> {
         children: pages,
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 15),
+        padding:  EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
         child: GNav(
-          gap: 2,
+          gap: 5,
           haptic: true,
           backgroundColor: Colors.white,
           activeColor: Colors.black,
@@ -53,6 +54,7 @@ class _Constains extends State<Constains> {
             GButton(
               icon: CupertinoIcons.home,
               text: "Home",
+
             ),
             GButton(
               icon: Icons.favorite,

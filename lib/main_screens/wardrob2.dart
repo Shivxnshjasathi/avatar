@@ -15,43 +15,15 @@ class _Wardrobe2State extends State<Wardrobe2> {
   @override
   List Maindata = [];
   List tempArray = [];
+  List Sorteddata = [];
+  List mainProducts = [];
 
   int current = 0;
   String selected_category = "";
+  var b = {};
 
-  double changePositionedOfLine() {
-    switch (current) {
-      case 0:
-        return 5;
-      case 1:
-        return 85;
-      case 2:
-        return 178;
-      case 3:
-        return 273;
-      default:
-        return 0;
-    }
-  }
-
-  double changeContainerWidth() {
-    switch (current) {
-      case 0:
-        return 65;
-      case 1:
-        return 80;
-      case 2:
-        return 80;
-      case 3:
-        return 65;
-      default:
-        return 0;
-    }
-  }
-
-  Future getdata(selected_cat) async {
-    print(selected_cat);
-    tempArray = [];
+  Future getProducts() async {
+    mainProducts = [];
     await FirebaseFirestore.instance
         .collection("user_v2")
         .doc("000000124")
@@ -62,44 +34,81 @@ class _Wardrobe2State extends State<Wardrobe2> {
                 //print(element.id);
 
                 var a = element.data();
-                print(a["cats"]);
-                print(selected_cat);
-                a["cats"].forEach((itemcat) {
-                  if (selected_cat
-                              .toLowerCase()
-                              .substring(0, selected_cat.length - 1) ==
-                          itemcat.toLowerCase() ||
-                      selected_cat.toLowerCase() == itemcat.toLowerCase()) {
-                    //Maindata.add(a);
-
-                    tempArray.add(a);
-                  }
-                });
-
-                //if (a["cats"].contains(selected_cat.toLowerCase())) {
-
-                // tempArray.add(a);
-                //}
-              }),
-              setState(() {
-                Maindata = tempArray;
-              }),
-              print(Maindata),
+                mainProducts.add(a);
+              })
             });
   }
 
-  bool _isLongPressed = false;
+  Future getSortedList(selected) async {
+    //  setState(() {
+    //   Sorteddata = widget.Myarray;
+    //  });
+    b = {};
+    List Products = [];
+    Maindata = [];
 
-  void _onLongPress() {
-    setState(() {
-      _isLongPressed = true;
+    tempArray = [];
+    print(selected);
+    Sorteddata = [];
+
+    mainProducts.forEach((element) {
+      //print(element.id);
+
+      element["cats"].forEach((itemcat) {
+        if (b.containsKey(itemcat)) {
+          b[itemcat] = b[itemcat] + 1;
+        } else {
+          b[itemcat] = 1;
+        }
+      });
     });
+    print(b);
+    print(widget.Myarray[0][selected].keys.toList());
+    b.keys.toList().forEach((value) => {
+          if (b[value] > 1) {Products.add(value)} // no. of limited items
+        });
+    print(Products);
+    print(widget.Myarray[0][selected].keys.toList()[0]);
+    widget.Myarray[0][selected].keys.toList().forEach((value) => {
+          if (value != "")
+            {
+              if (Products.contains(value.toLowerCase()) ||
+                  Products.contains(
+                      value.toLowerCase().substring(0, value.length - 1)))
+                {Sorteddata.add(value)}
+            }
+        });
+
+    if (Sorteddata.length > 0) {
+      getdata(Sorteddata[0]);
+    }
   }
 
-  void _onLongPressEnd() {
-    setState(() {
-      _isLongPressed = false;
+  Future getdata(selected_cat) async {
+    print(selected_cat);
+    print(b);
+    tempArray = [];
+
+    mainProducts.forEach((element) {
+      //print(element.id);
+      print(element["cats"]);
+      print(selected_cat);
+      element["cats"].forEach((itemcat) {
+        if (selected_cat.toLowerCase().substring(0, selected_cat.length - 1) ==
+                itemcat.toLowerCase() ||
+            selected_cat.toLowerCase() == itemcat.toLowerCase()) {
+          //Maindata.add(a);
+
+          tempArray.add(element);
+        }
+      });
+
+      //if (a["cats"].contains(selected_cat.toLowerCase())) {
+
+      // tempArray.add(a);
     });
+    print(tempArray);
+    Maindata = tempArray;
   }
 
   @override
@@ -115,7 +124,9 @@ class _Wardrobe2State extends State<Wardrobe2> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Container(
                     height: 150,
-                    child: Expanded(child: FutureBuilder(
+                    child: Expanded(
+                        child: FutureBuilder(
+                      future: getProducts(),
                       builder: (context, snapshot) {
                         return ListView.builder(
                             scrollDirection: Axis.horizontal,
@@ -132,7 +143,8 @@ class _Wardrobe2State extends State<Wardrobe2> {
 
                                     print(widget.Myarray[0][selected_category]);
                                   });
-                                  getdata(selected_ca);
+                                  getSortedList(selected_ca);
+                                  //   getdata(selected_ca);
                                 },
                                 child: Column(
                                   children: [
@@ -194,10 +206,7 @@ class _Wardrobe2State extends State<Wardrobe2> {
                                     physics: const BouncingScrollPhysics(),
                                     scrollDirection: Axis.horizontal,
                                     itemCount: selected_category != ""
-                                        ? widget
-                                            .Myarray[0][selected_category].keys
-                                            .toList()
-                                            .length
+                                        ? Sorteddata.length
                                         : 0,
                                     itemBuilder: (context, index) {
                                       return Padding(
@@ -205,14 +214,7 @@ class _Wardrobe2State extends State<Wardrobe2> {
                                             left: index == 0 ? 15 : 23, top: 7),
                                         child: GestureDetector(
                                           onTap: () {
-                                            print(widget
-                                                .Myarray[0][selected_category]
-                                                .keys
-                                                .toList()[index]);
-                                            getdata(widget
-                                                .Myarray[0][selected_category]
-                                                .keys
-                                                .toList()[index]);
+                                            getdata(Sorteddata[index]);
                                             setState(() {
                                               current = index;
                                             });
@@ -220,11 +222,7 @@ class _Wardrobe2State extends State<Wardrobe2> {
                                           child: Column(
                                             children: [
                                               Text(
-                                                widget
-                                                    .Myarray[0]
-                                                        [selected_category]
-                                                    .keys
-                                                    .toList()[index],
+                                                Sorteddata[index],
                                                 style: GoogleFonts.alata(
                                                   fontSize: current == index
                                                       ? 16
@@ -370,30 +368,10 @@ class _Wardrobe2State extends State<Wardrobe2> {
                                                         horizontal: 10.0,
                                                         vertical: 5),
                                                 child: Container(
-                                                  child: _isLongPressed
-                                                      ? Container(
-                                                          height: 20,
-                                                          width: 20,
-                                                          color: Color.fromRGBO(
-                                                              Maindata[index]
-                                                                      ["color"]
-                                                                  .toList()[0]
-                                                                  .toInt(),
-                                                              Maindata[index]
-                                                                      ["color"]
-                                                                  .toList()[1]
-                                                                  .toInt(),
-                                                              Maindata[index]
-                                                                      ["color"]
-                                                                  .toList()[2]
-                                                                  .toInt(),
-                                                              1),
-                                                          //  ),
-                                                        )
-                                                      : Image.network(
-                                                          Maindata[index]
-                                                              ["img_url"][0],
-                                                          scale: 1),
+                                                  child: Image.network(
+                                                      Maindata[index]["img_url"]
+                                                          [0],
+                                                      scale: 1),
                                                 ),
                                               ),
                                               Padding(
@@ -401,57 +379,28 @@ class _Wardrobe2State extends State<Wardrobe2> {
                                                     const EdgeInsets.symmetric(
                                                         vertical: 5.0,
                                                         horizontal: 10),
-                                                child: _isLongPressed
-                                                    ? Text(
-                                                        'Price : ' +
-                                                            Maindata[index]
-                                                                ["price"],
-                                                        style:
-                                                            GoogleFonts.alata(
-                                                                fontSize: 10,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w300),
-                                                      )
-                                                    : Text(
-                                                        Maindata[index]
-                                                            ["brand"],
-                                                        style:
-                                                            GoogleFonts.alata(
-                                                                fontSize: 10,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                      ),
+                                                child: Text(
+                                                  Maindata[index]["brand"],
+                                                  style: GoogleFonts.alata(
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
                                               ),
                                               Padding(
                                                 padding:
                                                     const EdgeInsets.symmetric(
                                                         vertical: 5.0,
                                                         horizontal: 10),
-                                                child: _isLongPressed
-                                                    ? Text(
-                                                        'Item : ' +
-                                                            Maindata[index][
-                                                                "ordered_item"],
-                                                        style:
-                                                            GoogleFonts.alata(
-                                                                fontSize: 10,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w300),
-                                                      )
-                                                    : Text(
-                                                        'vendors : ' +
-                                                            Maindata[index]
-                                                                ["vendors"],
-                                                        style:
-                                                            GoogleFonts.alata(
-                                                                fontSize: 10,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w300),
-                                                      ),
+                                                child: Text(
+                                                  'vendors : ' +
+                                                      Maindata[index]
+                                                          ["vendors"],
+                                                  style: GoogleFonts.alata(
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                          FontWeight.w300),
+                                                ),
                                               ),
                                             ],
                                           ),

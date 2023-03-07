@@ -52,42 +52,6 @@ class _trail extends State<trail> {
     DATA.addAll({});
     MyArray = [];
     var x = {};
-    tempArray = [];
-
-    await FirebaseFirestore.instance
-        .collection("user_v2")
-        .doc("000000124")
-        .collection("products")
-        .get()
-        .then((snapshot) => {
-              snapshot.docs.forEach((element) {
-                //print(element.id);
-
-                var a = element.data();
-                print(a["cats"]);
-                //  print(selected_cat);
-                // a["cats"].forEach((itemcat) {
-                // if (selected_cat
-                //      .toLowerCase()
-                //     .substring(0, selected_cat.length - 1) ==
-                //     itemcat.toLowerCase() ||
-                //    selected_cat.toLowerCase() == itemcat.toLowerCase()) {
-                //Maindata.add(a);
-
-                //   tempArray.add(a);
-                // }
-                // });
-
-                //if (a["cats"].contains(selected_cat.toLowerCase())) {
-
-                // tempArray.add(a);
-                //}
-              }),
-              // setState(() {
-              //  Maindata = tempArray;
-              //  }),
-              //  print(Maindata),
-            });
 
     await FirebaseFirestore.instance
         .collection("Categories")
